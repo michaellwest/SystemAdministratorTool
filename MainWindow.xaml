@@ -1,0 +1,22 @@
+<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Name="Window"
+    Title="System Administrator Tool" Height="588" Width="771">
+  <Grid>
+		<Menu Height="22" Name="menu1" VerticalAlignment="Top">
+			<MenuItem Header="File" />
+			<MenuItem Header="View" />
+			<MenuItem Header="Help" />
+		</Menu>
+		<TextBox Height="23" HorizontalAlignment="Left" Margin="12,28,0,0" Name="txtComputerName" VerticalAlignment="Top" Width="120" />
+		<Button Height="23" HorizontalAlignment="Left" Margin="25,57,0,0" Name="btnProcesses" VerticalAlignment="Top" Width="94">Processes</Button>
+		<Button Height="23" HorizontalAlignment="Left" Margin="25,94,0,0" Name="btnServices" VerticalAlignment="Top" Width="94">Services</Button>
+		<Grid Margin="152,28,12,12" Name="grid1" ShowGridLines="False">
+			<ListView Margin="6" Name="listView1" ClipToBounds="False">
+			</ListView>
+		</Grid>
+		<TextBox Height="23" HorizontalAlignment="Left" Margin="12,155,0,0" Name="txtUserName" VerticalAlignment="Top" Width="120" />
+		<Button IsDefault="true" Height="23" HorizontalAlignment="Left" Margin="25,184,0,0" Name="btnSearch" VerticalAlignment="Top" Width="94">Search</Button>
+	</Grid>
+</Window>
