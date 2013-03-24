@@ -37,15 +37,15 @@ $listView = [System.Windows.Controls.ListView]($content.FindName('listView1'))
 
 $btnProcesses = [System.Windows.Controls.Button]($content.FindName('btnProcesses'))
 $btnProcesses.Add_Click({
-    $processes = Get-Process -ComputerName $txtComputerName.Text
-    $listView.View = New-GridView -Columns "Id","Name"
+    $processes = Invoke-Command -ComputerName ($txtComputerName.Text -split ",") -ScriptBlock { Get-Process }
+    $listView.View = New-GridView -Columns "Id","Name","PSComputerName"
     $listView.ItemsSource = $processes
 })
 
 $btnServices = [System.Windows.Controls.Button]($content.FindName('btnServices'))
 $btnServices.Add_Click({
-    $services = Get-Service -ComputerName $txtComputerName.Text
-    $listView.View = New-GridView -Columns "Status","Name","DisplayName"
+    $services = Invoke-Command -ComputerName ($txtComputerName.Text -split ",") -ScriptBlock { Get-Service }
+    $listView.View = New-GridView -Columns "Status","Name","DisplayName","PSComputerName"
     $listView.ItemsSource = $services
 })
 
