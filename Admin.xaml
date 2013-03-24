@@ -65,7 +65,7 @@
             </StackPanel>
          </DockPanel>
       </Border>
-    <Grid x:Name="MainGrid" Background="#FF2E2E2E" DockPanel.Dock="Top">
+    <Grid x:Name="MainGrid" Background="#FF2E2E2E">
          <Border
             Name="MainBorder"
             Margin="10,30,10,10"
@@ -78,21 +78,42 @@
                   <GradientStop Offset="0.567" Color="#FFFFFFFF"/>
                </LinearGradientBrush>
             </Border.Background>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="275" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Top" Orientation="Horizontal" Grid.Column="0">                   
+                  <StackPanel Width="275">
+                    <Label Name="lblComputerName" 
+                      Width="200"
+                      HorizontalAlignment="Left"
+                      Margin="5,5,0,0"
+                      VerticalAlignment="Center"
+                      Style="{StaticResource DefaultLabelStyle}">Computer Name:
+                   </Label>
+                    <TextBox
+                      Name="txtComputerName"
+                      HorizontalAlignment="Left"
+                      Margin="10,0,0,0"
+                      VerticalAlignment="Center"
+                      Style="{StaticResource DefaultTextBoxStyle}">
+                   </TextBox>
+                		<Button Name="btnSearchComputer" HorizontalAlignment="Left" Margin="10,5,0,0" Width="94">Search for PC</Button>
+                		<Button Name="btnLocalAdmins" HorizontalAlignment="Left" Margin="10,5,0,0" Width="94">Local Admins</Button>
+                		<Button Name="btnProcesses" HorizontalAlignment="Left" Margin="10,5,0,0" Width="94">Processes</Button>
+                		<Button Name="btnServices" HorizontalAlignment="Left" Margin="10,5,0,0" Width="94">Services</Button>
+                		<Label Name="lblUserName" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Center" Style="{StaticResource DefaultLabelStyle}">Identity/Filter:</Label>
+                		<TextBox Name="txtUserName" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Center" Style="{StaticResource DefaultTextBoxStyle}" />
+                		<Button Name="btnSearch" IsDefault="true" HorizontalAlignment="Left" Margin="10,5,0,0" Width="94">Search</Button>
+                  </StackPanel>
+                </StackPanel>
+                <Grid Grid.Column="1">
+                    <ListView Margin="6" Name="listView1">
+          			    </ListView>
+              	</Grid>
+            </Grid>
           </Border>
-        		<Menu Height="22" Name="menu1" VerticalAlignment="Top">
-        			<MenuItem Header="File" />
-        			<MenuItem Header="View" />
-        			<MenuItem Header="Help" />
-        		</Menu>
-        		<TextBox Height="23" HorizontalAlignment="Left" Margin="20,40,0,0" Name="txtComputerName" VerticalAlignment="Top" Width="120" />
-        		<Button Height="23" HorizontalAlignment="Left" Margin="25,80,0,0" Name="btnProcesses" VerticalAlignment="Top" Width="94">Processes</Button>
-        		<Button Height="23" HorizontalAlignment="Left" Margin="25,110,0,0" Name="btnServices" VerticalAlignment="Top" Width="94">Services</Button>
-        		<Grid Margin="152,28,12,12" Name="grid1" ShowGridLines="False">
-        			<ListView Margin="6" Name="listView1" ClipToBounds="False">
-        			</ListView>
-        		</Grid>
-        		<TextBox Height="23" HorizontalAlignment="Left" Margin="20,155,0,0" Name="txtUserName" VerticalAlignment="Top" Width="120" />
-        		<Button IsDefault="true" Height="23" HorizontalAlignment="Left" Margin="25,184,0,0" Name="btnSearch" VerticalAlignment="Top" Width="94">Search</Button>
-	</Grid>
+	    </Grid>
 	</DockPanel>
 </Page>

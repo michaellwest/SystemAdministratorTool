@@ -15,6 +15,18 @@ function New-GridView {
     $view
 }
 
+function Get-Button {
+    param($Content, $Name)
+
+    [System.Windows.Controls.Button]($Content.FindName($Name))
+}
+
+function Get-TextBox {
+    param($Content, $Name)
+
+    [System.Windows.Controls.TextBox]($Content.FindName($Name))
+}
+
 Add-Type -AssemblyName "PresentationFramework"
 
 [xml]$xaml = Get-Content -Path (Join-Path -Path (Split-Path $script:MyInvocation.MyCommand.Path) -ChildPath  "MainWindow.xaml")
@@ -28,28 +40,42 @@ $window.Content = [System.Windows.Markup.XamlReader]::Load($reader)
 
 $content = $window.Content
 
-$txtComputerName = [System.Windows.Controls.TextBox]($content.FindName('txtComputerName'))
+$txtComputerName = Get-TextBox $content 'txtComputerName'
 $txtComputerName.Text = $Env:COMPUTERNAME
-$txtUserName = [System.Windows.Controls.TextBox]($content.FindName('txtUserName'))
+$txtUserName = Get-TextBox $content 'txtUserName'
 $txtUserName.Text = $Env:USERNAME
 
 $listView = [System.Windows.Controls.ListView]($content.FindName('listView1'))
 
-$btnProcesses = [System.Windows.Controls.Button]($content.FindName('btnProcesses'))
+$btnSearchComputer = Get-Button $content 'btnSearchComputer'
+$btnSearchComputer.Add_Click({
+    $details = ($txtComputerName.Text -split ",") | Get-ADComputer -Properties DNSHostName,OperatingSystem,OperatingSystemVersion,WhenCreated
+    $listView.View = New-GridView -Columns "DNSHostName","OperatingSystem","OperatingSystemVersion","WhenCreated"
+    $listView.ItemsSource = @($details)
+})
+
+$btnLocalAdmins = Get-Button $content 'btnLocalAdmins'
+$btnLocalAdmins.Add_Click({
+    $admins = Get-CimInstance -ComputerName ($txtComputerName.Text -split ",") -ClassName Win32_Group -Filter "Name = 'Administrators'" | Get-CimAssociatedInstance -Association win32_groupuser
+    $listView.View = New-GridView -Columns "Name","Domain","Description","PSComputerName"
+    $listView.ItemsSource = ($admins)
+})
+
+$btnProcesses = Get-Button $content 'btnProcesses'
 $btnProcesses.Add_Click({
     $processes = Invoke-Command -ComputerName ($txtComputerName.Text -split ",") -ScriptBlock { Get-Process }
     $listView.View = New-GridView -Columns "Id","Name","PSComputerName"
     $listView.ItemsSource = $processes
 })
 
-$btnServices = [System.Windows.Controls.Button]($content.FindName('btnServices'))
+$btnServices = Get-Button $content 'btnServices'
 $btnServices.Add_Click({
     $services = Invoke-Command -ComputerName ($txtComputerName.Text -split ",") -ScriptBlock { Get-Service }
     $listView.View = New-GridView -Columns "Status","Name","DisplayName","PSComputerName"
     $listView.ItemsSource = $services
 })
 
-$btnSearch = [System.Windows.Controls.Button]($content.FindName('btnSearch'))
+$btnSearch = Get-Button $content 'btnSearch'
 $btnSearch.Add_Click({
     $searchCriteria = $txtUserName.Text
     $props = @{
