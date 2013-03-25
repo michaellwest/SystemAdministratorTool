@@ -54,22 +54,22 @@ $btnSearchComputer.Add_Click({
     $listView.ItemsSource = @($details)
 })
 
-$btnLocalAdmins = Get-Button $content 'btnLocalAdmins'
-$btnLocalAdmins.Add_Click({
+$btnAdmin = Get-Button $content 'btnAdmin'
+$btnAdmin.Add_Click({
     $admins = Get-CimInstance -ComputerName ($txtComputerName.Text -split ",") -ClassName Win32_Group -Filter "Name = 'Administrators'" | Get-CimAssociatedInstance -Association win32_groupuser
     $listView.View = New-GridView -Columns "Name","Domain","Description","PSComputerName"
     $listView.ItemsSource = ($admins)
 })
 
-$btnProcesses = Get-Button $content 'btnProcesses'
-$btnProcesses.Add_Click({
+$btnProcess = Get-Button $content 'btnProcess'
+$btnProcess.Add_Click({
     $processes = Invoke-Command -ComputerName ($txtComputerName.Text -split ",") -ScriptBlock { Get-Process }
     $listView.View = New-GridView -Columns "Id","Name","PSComputerName"
     $listView.ItemsSource = $processes
 })
 
-$btnServices = Get-Button $content 'btnServices'
-$btnServices.Add_Click({
+$btnService = Get-Button $content 'btnService'
+$btnService.Add_Click({
     $services = Invoke-Command -ComputerName ($txtComputerName.Text -split ",") -ScriptBlock { Get-Service }
     $listView.View = New-GridView -Columns "Status","Name","DisplayName","PSComputerName"
     $listView.ItemsSource = $services
